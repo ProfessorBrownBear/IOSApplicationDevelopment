@@ -1,0 +1,55 @@
+#How Do I Make A Managed Object Model
+
+1. Managed Object Model: The Managed Object Model is like the schema in a traditional database. 
+It consists of entities (like tables) and attributes (similar to table fields). 
+The model is usually visualized and developed using Xcode's visual editor.
+In Swift, you usually don't directly write code to define the Managed Object Model as it's created using Xcode's visual editor. But once it's created, you can access and interact with it in code.
+
+##Here's how you might access and interact with the Managed Object Model:
+
+// Accessing AppDelegate and Persistent Container
+guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+    return
+}
+
+let managedContext = appDelegate.persistentContainer.viewContext
+let entity = NSEntityDescription.entity(forEntityName: "YourEntity", in: managedContext)
+
+// If we have an entity by the name "YourEntity" we can create a new object of this entity type.
+let managedObject = NSManagedObject(entity: entity!, insertInto: managedContext)
+Above, your YourEntity should be replaced with the name of your entity (table).
+
+In the visual editor, you can create an entity, set its attributes (fields), relationships, etc. 
+When you create a new Entity in the Core Data model, Xcode can automatically generate an associated Swift 
+(or Objective-C) class with properties for each of the Entity's Attributes, 
+and these can then be accessed and manipulated like any other Swift class and properties.
+
+Finally, a Managed Object Context is used to manage instances of these entities (NSManagedObjects), 
+including tracking changes, undo and redo, and saving to the persistent store (disk).
+
+##HOW DO i make a managed object model
+To create a managed object model in an iOS application using Core Data, you can follow these steps:
+
+Open your Xcode project: Open Xcode and open your existing project or create a new one.
+
+Add a Core Data model file: Right-click on your project folder in the Project Navigator, select "New File", and choose "Data Model" under the Core Data section. Give it a meaningful name, such as "MyAppModel".
+
+###Define entities and attributes: Once the Core Data model file is created, you can design your entities and their attributes using Xcode's visual editor. To do this, select the .xcdatamodeld file, and you will see an empty canvas in the main editor area.
+
+To add entities, click on the "+" button at the bottom left corner.
+To add attributes to an entity, select the entity and click on the "+" button in the "Attributes" section of the right-hand panel. Define the attribute name, type, and any other necessary properties.
+You can also define relationships between entities by clicking on the "+" button in the "Relationships" section of an entity. Specify the destination entity, type, and any additional settings.
+Generate managed object subclasses: Once you have defined your entities and attributes, you can generate the corresponding managed object subclasses. Select each entity in the model editor, and in the right-hand pane, go to the "Class" section and choose "Category/extension" from the dropdown. Then, click on the "Create NSManagedObject subclass" button. This will generate the managed object subclasses with properties corresponding to the attributes you defined.
+
+##Access the managed object model: To access the managed object model within your code, you can typically use the NSManagedObjectModel class. For instance, you can do:
+
+
+guard let modelURL = Bundle.main.url(forResource: "MyAppModel", withExtension: "momd") else {
+    fatalError("Model file not found!")
+}
+guard let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL) else {
+    fatalError("Unable to create managed object model!")
+}
+Replace "MyAppModel" with the name you gave to your managed object model in step 2.
+
+##That's it! You have created a managed object model in your iOS application using Core Data. You can now use this model to interact with your data objects and persist them to a persistent store.
